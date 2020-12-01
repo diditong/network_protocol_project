@@ -1,0 +1,28 @@
+Full Name: Jiashuo Tong
+USC ID: 4565373949
+
+What I Have Done?
+For the algorithm to find connections, I used std::unordered_map
+instead of using offsets as recommended in the project description.
+
+Instead of using fork(), I used std::thread, and blocked SIGPIPE
+so instead I/O operations will return -1/0 and set errno.  If this
+indicates the client is gone, we gracefully exit the thread.  This is
+equivalent to (if not better than) fork.
+
+Code Files and What They Do:
+serverA.cpp/h = serverA main
+serverB.cpp/h = serverB main
+common.cpp/h = common code, utilities, common serverA/B code
+servermain.cpp = server main, uses std::thread for forking
+client.cpp = client
+
+Code contains comments on flow and logic
+
+Idiosyncrasy: Uses std::thread instead of fork, from client perspective
+this isn't really observable, but this will mean only one process with
+many threads instead of many single threaded processes.  Also uses C++17
+and links with the pthread library.
+
+Reused Code: Nothing directly copied and pasted.  Read a lot of
+StackOverflow and linux/POSIX documentation
